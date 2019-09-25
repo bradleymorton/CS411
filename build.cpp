@@ -7,50 +7,41 @@
 
 #include "build.h"
 #include <math.h>
-
+#include <iostream>
+using std::cout;
+using std::endl;
 
 
 
 
 int build(int w, int e, const vector<Bridge> & bridges)
 {
-	return findMax(powerSet(bridges));
+	return findMax(powerSet(w, e, bridges));
 }
 
 vector<vector<Bridge>> powerSet(int w, int e, const vector<Bridge> & bridges)
 {
-	vector<vector<Bridge>> powerSet;
 
 	int n = bridges.size();
 	int sizeOfPowerset = pow(2, n);
-	powerSet.resize(sizeOfPowerset);
 
-	vector<int> set;
-	set.resize(n);
-	for(auto i:set)
-	{
-		set[i]=0;
-	}
+
+	vector<int> set(n);
+	vector<vector<Bridge>> powerSet(sizeOfPowerset);
+	
 
 	for (int i = 0; i <sizeOfPowerset; ++i)
 	{
 		for (int j=0; j<n; ++j)
 		{
-			if(j && (1<<j))
+			if(i & (1<<j))
 			{
 				set[j]=1;
+				powerSet[i].push_back(bridges[j]);
 			}
 			else
 			{
 				set[j]=0;
-			}
-		}
-
-		for(int iter = 0; iter; ++iter)
-		{
-			if(set[iter]==1)
-			{
-				powerSet[i].push_back(bridges[iter]);
 			}
 		}
 	}
@@ -70,17 +61,17 @@ int findMax(const vector<vector<Bridge>> & bridges)
 		int toll = 0;
 		//If valid, check against max and increase it if larger.
 		//If invalid, don't. 
-		for(int j = 0; j<(bridges[i]).size(); ++j)
+		for(int j = 0; j<i.size(); ++j)
 		{
-			for(int k =j+1; k<bridges[i].size(); ++k)
+			for(int k =j+1; k<i.size(); ++k)
 			{
-				if(bridges[i][j][0] <= bridges[i][k][0] && bridges[i][j][1] >= bridges[i][k][1] 
-				|| bridges[i][j][0] >= bridges[i][k][0] && bridges[i][j][1] <= bridges[i][k][1])
+				if((i[j][0] <= i[k][0] && i[j][1] >= i[k][1]) 
+				|| (i[j][0] >= i[k][0] && i[j][1] <= i[k][1]))
 				{
 					break;
 				}
 			}
-			toll += bridges[i][j][2];
+			toll += i[j][2];
 		}
 		if(toll>max)
 		{
