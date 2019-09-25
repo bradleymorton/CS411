@@ -14,7 +14,7 @@
 
 int build(int w, int e, const vector<Bridge> & bridges)
 {
-	return 0;
+	return findMax(powerSet(bridges));
 }
 
 vector<vector<Bridge>> powerSet(int w, int e, const vector<Bridge> & bridges)
