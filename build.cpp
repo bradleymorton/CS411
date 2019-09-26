@@ -54,31 +54,34 @@ vector<vector<Bridge>> powerSet(int w, int e, const vector<Bridge> & bridges)
 int findMax(const vector<vector<Bridge>> & bridges)
 {
 	int max =0;
-
+	int toll;
 
 	for(auto i:bridges)
 	{
-		int toll = 0;
-		//If valid, check against max and increase it if larger.
-		//If invalid, don't. 
-		for(int j = 0; j<i.size(); ++j)
-		{
-			for(int k =j+1; k<i.size(); ++k)
-			{
-				if((i[j][0] <= i[k][0] && i[j][1] >= i[k][1]) 
-				|| (i[j][0] >= i[k][0] && i[j][1] <= i[k][1]))
-				{
-					break;
-				}
-			}
-			toll += i[j][2];
-		}
-		if(toll>max)
+		toll = findToll(i);
+		if(toll > max)
 		{
 			max = toll;
 		}
 	}
 
-
 	return max;
+}
+
+int findToll(const vector<Bridge> & bridges)
+{
+	int toll =0;
+	for(int i = 0; i<bridges.size(); ++i)
+		{
+			for(int j =i+1; j<bridges.size(); ++j)
+			{
+				if((bridges[i][0] <= bridges[j][0] && bridges[i][1] >= bridges[j][1]) 
+				|| (bridges[i][0] >= bridges[j][0] && bridges[i][1] <= bridges[j][1]))
+				{
+					return 0;
+				}
+			}
+			toll += bridges[i][2];
+		}
+	return toll;
 }

@@ -18,6 +18,8 @@ vector<vector<Bridge>> powerSet(int w, int e, const vector<Bridge> & bridges);
 
 int findMax(const vector<vector<Bridge>> & bridges);
 
+int findToll(const vector<Bridge> & bridges);
+
 
 
 
