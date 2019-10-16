@@ -69,7 +69,8 @@ int contigSum(RAIter first, RAIter last)
 	}
 	
 	int size = distance(first, last);
-	GCSIntermediateValues  vals = recurse(first, last -1, size);
+    GCSIntermediateValues vals;
+    vals = recurse(first, last, size);
 	return vals.sum;
 
 
