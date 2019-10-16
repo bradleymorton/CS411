@@ -21,6 +21,22 @@ public:
 	int sum = 0;
 };
 
+template<typename RAiter>
+GCSIntermediateValues baseCase(RAIter first, GCSIntermediateValues vals)
+{
+if((*first) < 0)
+		{
+			vals.sum += (*first);
+			return vals;
+		}
+		vals.gcs += (*first);
+		vals.gcsWithFirst += (*first);
+		vals.gcsWithLast += (*first);
+		vals.sum += (*first);
+		return vals;
+}
+
+
 
 template<typename RAIter>
 GCSIntermediateValues recurse(RAIter first, RAIter last, int size)
@@ -28,15 +44,7 @@ GCSIntermediateValues recurse(RAIter first, RAIter last, int size)
 	GCSIntermediateValues vals_0;
 	if(size == 1)
 	{
-		if((*first) < 0)
-		{
-			vals_0.sum += (*first);
-			return vals_0;
-		}
-		vals_0.gcs += (*first);
-		vals_0.gcsWithFirst += (*first);
-		vals_0.gcsWithLast += (*first);
-		vals_0.sum += (*first);
+		baseCase(first, vals_0);
 	}
 
 	RAIter mid = first + ((last - first)/2);
@@ -68,9 +76,8 @@ int contigSum(RAIter first, RAIter last)
 	return sum;
 	}
 	
-	int size = distance(first, last);
-    GCSIntermediateValues vals;
-    vals = recurse(first, last, size);
+	int size = distance(first, last)+1;
+	GCSIntermediateValues vals = recurse(first, last, size);
 	return vals.sum;
 
 
