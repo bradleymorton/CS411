@@ -12,55 +12,57 @@ using std::max;
 using std::cout;
 using std::endl;
 
-class GCSIntermediateValues
+
+//Class used to store four variables as in homework description
+class GCSValues
 {
 public: 
-	int gcs = 0;
-	int gcsWithFirst = 0;
-	int gcsWithLast = 0;
-	int sum = 0;
+	int a = 0;
+	int b = 0;
+	int c = 0;
+	int d = 0;
 };
 
 template<typename RAiter>
-GCSIntermediateValues baseCase(RAIter first, GCSIntermediateValues vals)
+GCSValues baseCase(RAiter first)
 {
-if((*first) < 0)
-		{
-			vals.sum += (*first);
-			return vals;
-		}
-		vals.gcs += (*first);
-		vals.gcsWithFirst += (*first);
-		vals.gcsWithLast += (*first);
-		vals.sum += (*first);
-		return vals;
+        GCSValues values;
+        if((*first <0))
+        {
+            return {0, 0, 0, (*first)};
+        }
+        else
+        {
+            return {(*first), (*first), (*first), (*first)};
+        }
+}
+
+int maxOfThree(int a, int b,int c)
+{
+    return max(a, max(b,c));
 }
 
 
-
 template<typename RAIter>
-GCSIntermediateValues recurse(RAIter first, RAIter last, int size)
+GCSValues recurse(RAIter first, RAIter last)
 {
-	GCSIntermediateValues vals_0;
-	if(size == 1)
+	if(distance(first, last) ==1)
 	{
-		baseCase(first, vals_0);
+		return baseCase(first);
 	}
 
 	RAIter mid = first + ((last - first)/2);
-	size = distance(first, mid)+1;
-	vals_0 = recurse(first, mid, size);
-	size = distance(mid +1, last)+1;
-	GCSIntermediateValues vals_1 = recurse(mid+1, last, size);
-	GCSIntermediateValues vals_2 = 
+    GCSValues valsLeft = recurse(first, mid);
+	GCSValues valsRight = recurse(mid, last);
+	GCSValues vals_total =
 	{
-		max(vals_0.gcs, max(vals_1.gcs, (vals_0.gcsWithLast + vals_0.gcsWithLast))),
-		max(vals_0.gcsWithFirst, (vals_0.sum + vals_1.gcsWithFirst)),
-		max(vals_1.gcsWithLast, (vals_0.gcsWithLast + vals_1.sum)),
-		vals_0.sum + vals_1.sum
+            maxOfThree(valsLeft.a, valsRight.a, valsLeft.c + valsRight.b),
+            max(valsLeft.b, (valsLeft.d + valsRight.b)),
+            max(valsRight.c, (valsLeft.c + valsRight.d)),
+            valsLeft.d + valsRight.d
 	};
 
-	return vals_2;
+	return vals_total;
 }
 
 
@@ -75,10 +77,9 @@ int contigSum(RAIter first, RAIter last)
 	{
 	return sum;
 	}
-	
-	int size = distance(first, last)+1;
-	GCSIntermediateValues vals = recurse(first, last, size);
-	return vals.sum;
+
+	GCSValues vals = recurse(first, last);
+	return vals.a;
 
 
 }
