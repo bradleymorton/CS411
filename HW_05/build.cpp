@@ -3,6 +3,7 @@
 
 #include <algorithm>
 using std::max;
+#include <vector>
 using std::vector;
 
 #include "build.hpp"
@@ -10,7 +11,7 @@ using std::vector;
 
 
 
-void findMaxValue(int i, int j, vector<vector<int>> & matrix)
+void findMaxValue(int i, int j, std::vector<std::vector<int>> & matrix)
 {
     if(i != 0 && j != 0)
         {
@@ -28,7 +29,7 @@ void findMaxValue(int i, int j, vector<vector<int>> & matrix)
 
 
 
-int findMaxValue(int w, int e, const vector<Bridge> & bridges)
+int build(int w, int e, const vector<Bridge> & bridges)
 {
     vector<vector<int>> matrix(w, vector<int>(e));
 
